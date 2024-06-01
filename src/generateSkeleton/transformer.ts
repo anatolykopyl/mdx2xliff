@@ -1,6 +1,5 @@
 import {visit} from "unist-util-visit";
 import {Transformer} from "unified";
-import {create} from "xmlbuilder2";
 import {Node} from "unified/lib";
 
 type TValuefulNode = Node & {

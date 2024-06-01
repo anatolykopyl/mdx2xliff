@@ -1,9 +1,8 @@
 import {Plugin} from "unified";
-import generateXliff from "./generateXliff";
-import generateSkeleton from "./generateSkeleton";
+import generateXliff from "./generateXliff/index";
+import generateSkeleton from "./generateSkeleton/index";
 import {create} from "xmlbuilder2";
 import {TXliff} from "./types";
-
 
 type TGenerateOptions = {
   fileContents: string
