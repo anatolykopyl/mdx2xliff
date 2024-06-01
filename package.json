@@ -1,13 +1,14 @@
 {
   "name": "mdx2xliff",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility for generating a xliff and a skeleton file from an mdx file and back.",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:main && npm run build:types",
     "build:main": "babel -x .ts -d dist src",
-    "build:types": "tsc"
+    "build:types": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "author": "Anatoly Kopyl <hi@kopyl.dev>",
   "license": "GPL-3.0",
