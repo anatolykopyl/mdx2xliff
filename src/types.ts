@@ -8,12 +8,12 @@ export type TTransUnit = {
 }
 
 export type TXliff = {
-  "@xmlns": string,
+  "@xmlns": string
   "@version": string
+  "@srcLang": string
+  "@trgLang": string
   file: {
-    "@srcLang": string,
-    "@trgLang": string,
-    "@datatype": string,
+    "@datatype": string
     unit: TTransUnit[]
   }
 }

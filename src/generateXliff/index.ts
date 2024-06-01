@@ -41,10 +41,10 @@ export default async ({
   } = {
     xliff: {
       "@xmlns": "urn:oasis:names:tc:xliff:document:2.0",
-      "@version": "2.0",
+      "@version": "2.1",
+      "@srcLang": sourceLang,
+      "@trgLang": targetLang,
       file: {
-        "@srcLang": sourceLang,
-        "@trgLang": targetLang,
         "@datatype": "plaintext",
         unit: [] as TTransUnit[]
       }
