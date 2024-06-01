@@ -1,0 +1,44 @@
+import {Plugin} from "unified";
+import generateXliff from "./generateXliff";
+import generateSkeleton from "./generateSkeleton";
+import {create} from "xmlbuilder2";
+
+
+type TGenerateOptions = {
+  fileContents: string
+  beforeDefaultRemarkPlugins?: Plugin[],
+  skipNodes?: string[],
+  sourceLang?: string,
+  targetLang?: string
+}
+
+export const generate = async (options: TGenerateOptions): Promise<{
+  skeleton: string
+  xliff: string
+}> => {
+  return {
+    skeleton: await generateSkeleton(options),
+    xliff: await generateXliff(options)
+  };
+};
+
+export const compose = ({
+  skeleton,
+  xliff
+}: {
+  skeleton: string,
+  xliff: string
+}) => {
+  let result = skeleton;
+
+  const xliffObj = create(xliff).end({ format: "object" });
+  const transUnits = xliffObj.xliff.file.body["trans-unit"];
+  for (const transUnit of transUnits) {
+    const id = transUnit["@id"];
+    result = result.replace(`%%%${id}%%%`, transUnit.source);
+  }
+
+  result = result.replaceAll(/%%%[a-zA-Z0-9]+%%%/g, "");
+
+  return result;
+};
