@@ -1,18 +1,19 @@
 export type TTransUnit = {
   "@id": string | number
   "@type"?: string
-  source: string
-  target?: string
+  segment: {
+    source: string
+    target?: string
+  }
 }
 
 export type TXliff = {
+  "@xmlns": string,
   "@version": string
   file: {
-    "@source-language": string,
-    "@target-language": string,
+    "@srcLang": string,
+    "@trgLang": string,
     "@datatype": string,
-    body: {
-      "trans-unit": TTransUnit[]
-    }
+    unit: TTransUnit[]
   }
 }

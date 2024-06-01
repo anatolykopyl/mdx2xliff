@@ -32,11 +32,11 @@ export const compose = ({
   let result = skeleton;
 
   const xliffObj = create(xliff).end({ format: "object" }) as {xliff: TXliff};
-  const transUnits = xliffObj.xliff.file.body["trans-unit"];
+  const transUnits = xliffObj.xliff.file.unit;
   for (const transUnit of transUnits) {
     const id = transUnit["@id"];
-    if (!transUnit.target) throw new Error(`Id ${id} doesn't have a translation`);
-    result = result.replace(`%%%${id}%%%`, transUnit.target);
+    if (!transUnit.segment.target) throw new Error(`Id ${id} doesn't have a translation`);
+    result = result.replace(`%%%${id}%%%`, transUnit.segment.target);
   }
 
   result = result.replaceAll(/%%%[a-zA-Z0-9]+%%%/g, "");

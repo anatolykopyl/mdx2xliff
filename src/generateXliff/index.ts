@@ -40,14 +40,13 @@ export default async ({
     xliff: TXliff
   } = {
     xliff: {
-      "@version": "1.2",
+      "@xmlns": "urn:oasis:names:tc:xliff:document:2.0",
+      "@version": "2.0",
       file: {
-        "@source-language": sourceLang,
-        "@target-language": targetLang,
+        "@srcLang": sourceLang,
+        "@trgLang": targetLang,
         "@datatype": "plaintext",
-        body: {
-          "trans-unit": [] as TTransUnit[]
-        }
+        unit: [] as TTransUnit[]
       }
     }
   };
@@ -58,10 +57,12 @@ export default async ({
     if (!node.value) return;
     if (node.value.trim() === "") return;
 
-    xliffObj.xliff.file.body["trans-unit"].push({
+    xliffObj.xliff.file["unit"].push({
       "@id": index,
       "@type": node.type,
-      source: node.value
+      segment: {
+        source: node.value
+      }
     });
 
     index += 1;
