@@ -35,7 +35,8 @@ export const compose = ({
   const transUnits = xliffObj.xliff.file.body["trans-unit"];
   for (const transUnit of transUnits) {
     const id = transUnit["@id"];
-    result = result.replace(`%%%${id}%%%`, transUnit.source);
+    if (!transUnit.target) throw new Error(`Id ${id} doesn't have a translation`);
+    result = result.replace(`%%%${id}%%%`, transUnit.target);
   }
 
   result = result.replaceAll(/%%%[a-zA-Z0-9]+%%%/g, "");
