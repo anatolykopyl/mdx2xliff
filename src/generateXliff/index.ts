@@ -5,13 +5,7 @@ import {visit} from "unist-util-visit";
 import {Node} from "unified/lib";
 import {create} from "xmlbuilder2";
 import * as defaultOptions from "../defaultOptions";
-
-type TTransUnit = {
-  "@id": string | number
-  "@type"?: string
-  source: string
-  target?: string
-}
+import {TTransUnit, TXliff} from "../types";
 
 type TValuefulNode = Node & {
   value: string
@@ -42,9 +36,11 @@ export default async ({
     .parse(fileContents);
 
   let index = 0;
-  const xliffObj = {
+  const xliffObj: {
+    xliff: TXliff
+  } = {
     xliff: {
-      "@version": 1.2,
+      "@version": "1.2",
       file: {
         "@source-language": sourceLang,
         "@target-language": targetLang,

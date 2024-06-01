@@ -1,12 +1,12 @@
 {
   "name": "mdx2xliff",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "tsx src/index.ts"
   },
-  "author": "",
+  "author": "Anatoly Kopyl",
   "license": "GPL-3.0",
   "devDependencies": {
     "@types/node": "^20.12.13",

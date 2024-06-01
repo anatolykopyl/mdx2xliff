@@ -2,6 +2,7 @@ import {Plugin} from "unified";
 import generateXliff from "./generateXliff";
 import generateSkeleton from "./generateSkeleton";
 import {create} from "xmlbuilder2";
+import {TXliff} from "./types";
 
 
 type TGenerateOptions = {
@@ -31,7 +32,7 @@ export const compose = ({
 }) => {
   let result = skeleton;
 
-  const xliffObj = create(xliff).end({ format: "object" });
+  const xliffObj = create(xliff).end({ format: "object" }) as {xliff: TXliff};
   const transUnits = xliffObj.xliff.file.body["trans-unit"];
   for (const transUnit of transUnits) {
     const id = transUnit["@id"];
