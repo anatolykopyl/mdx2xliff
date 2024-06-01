@@ -17,6 +17,8 @@ export default function({
     visit(tree, (_node) => {
       const node = _node as TValuefulNode;
       if (skipNodes.includes(node.type)) return;
+      if (!node.value) return;
+      if (node.value.trim() === "") return;
       node.value = `%%%${index}%%%`;
       index += 1;
     });

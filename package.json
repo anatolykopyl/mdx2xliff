@@ -1,16 +1,20 @@
 {
   "name": "mdx2xliff",
   "type": "module",
-  "version": "0.8.0",
-  "description": "",
+  "version": "0.9.0",
+  "description": "A utility for generating a xliff and a skeleton file from an mdx file and back.",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:main && npm run build:types",
     "build:main": "babel -x .ts -d dist src",
     "build:types": "tsc"
   },
-  "author": "Anatoly Kopyl",
+  "author": "Anatoly Kopyl <hi@kopyl.dev>",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anatolykopyl/mdx2xliff.git"
+  },
   "devDependencies": {
     "@babel/cli": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
@@ -20,7 +24,6 @@
     "@typescript-eslint/parser": "^7.11.0",
     "babel-plugin-add-import-extension": "^1.6.0",
     "eslint": "^8.57.0",
-    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {

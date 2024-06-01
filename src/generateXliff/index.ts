@@ -55,6 +55,8 @@ export default async ({
   visit(tree, (_node) => {
     const node = _node as TValuefulNode;
     if (skipNodes.includes(node.type)) return;
+    if (!node.value) return;
+    if (node.value.trim() === "") return;
 
     xliffObj.xliff.file.body["trans-unit"].push({
       "@id": index,
