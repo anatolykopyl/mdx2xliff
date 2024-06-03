@@ -2,6 +2,8 @@
 
 A utility for generating a xliff and a skeleton file from a mdx file and back.
 
+The xliff file is compliant with version 2.1, which is important if working with DeepL.
+
 ## API
 
 This package provides two named exports: `extract` and `reconstruct`.
@@ -61,7 +63,7 @@ import { extract } from 'mdx2xliff'
 
 ;(async () => {
   const fileContents = readFileSync('test.mdx', 'utf8')
-  const { skeleton, xliff } = await generate({
+  const { skeleton, xliff } = await extract({
     fileContents,
     sourceLang: 'en',
     targetLang: 'fr'
@@ -71,3 +73,14 @@ import { extract } from 'mdx2xliff'
   writeFileSync('test.xliff', xliff)
 })()
 ```
+
+## Similar projects
+
+### [md2xliff](https://github.com/cataria-rocks/md2xliff)
+
+Pretty old, last commit was in 2022. Uses [unified](https://github.com/unifiedjs/unified) version 6. Focuses on plain Markdown.
+
+### [@diplodoc/markdown-translation](https://github.com/diplodoc-platform/translation)
+
+Actively maintained and developed. Focuses on [YFM](https://diplodoc.com/docs/en/index-yfm). No way to add support for MDX.
+Despite being new, uses xliff version 1.2.
