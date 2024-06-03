@@ -4,7 +4,7 @@ import generateSkeleton from "./generateSkeleton/index";
 import {create} from "xmlbuilder2";
 import {TXliff} from "./types";
 
-type TGenerateOptions = {
+type TExtractOptions = {
   fileContents: string
   beforeDefaultRemarkPlugins?: Plugin[],
   skipNodes?: string[],
@@ -12,7 +12,7 @@ type TGenerateOptions = {
   targetLang?: string
 }
 
-export const generate = async (options: TGenerateOptions): Promise<{
+export const extract = async (options: TExtractOptions): Promise<{
   skeleton: string
   xliff: string
 }> => {
@@ -22,12 +22,14 @@ export const generate = async (options: TGenerateOptions): Promise<{
   };
 };
 
-export const compose = ({
+export const reconstruct = ({
   skeleton,
-  xliff
+  xliff,
+  ignoreUntranslated
 }: {
   skeleton: string,
-  xliff: string
+  xliff: string,
+  ignoreUntranslated?: boolean
 }) => {
   let result = skeleton;
 
@@ -35,8 +37,12 @@ export const compose = ({
   const transUnits = xliffObj.xliff.file.unit;
   for (const transUnit of transUnits) {
     const id = transUnit["@id"];
-    if (!transUnit.segment.target) throw new Error(`Id ${id} doesn't have a translation`);
-    result = result.replace(`%%%${id}%%%`, transUnit.segment.target);
+    if (!transUnit.segment.target && !ignoreUntranslated) throw new Error(`Id ${id} doesn't have a translation`);
+    if (!transUnit.segment.target) {
+      result = result.replace(`%%%${id}%%%`, transUnit.segment.source);
+    } else {
+      result = result.replace(`%%%${id}%%%`, transUnit.segment.target);
+    }
   }
 
   result = result.replaceAll(/%%%[a-zA-Z0-9]+%%%/g, "");
