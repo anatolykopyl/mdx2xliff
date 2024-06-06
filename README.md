@@ -24,6 +24,17 @@ Generates a skeleton file and a xliff file from a given mdx.
 }
 ```
 
+##### Default values
+
+```
+{
+  beforeDefaultRemarkPlugins: []
+  skipNodes: ["code", "inlineCode", "mdxjsEsm", "mdxFlowExpression", "mdxTextExpression"]
+  sourceLang: "ru"
+  targetLang: "en"
+}
+```
+
 #### Returns
 
 ```
@@ -46,6 +57,14 @@ If a translation is missing it throws an error by default. This can be changed b
   skeleton: string
   xliff: string
   ignoreUntranslated?: boolean
+}
+```
+
+##### Default values
+
+```
+{
+  ignoreUntranslated: false
 }
 ```
 
