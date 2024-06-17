@@ -3,12 +3,9 @@ import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
 import {visit} from "unist-util-visit";
 import {Node} from "unified/lib";
-// @ts-expect-error no types in locize/xliff
-import jsToXliff12 from "xliff/jsToXliff12";
-// @ts-expect-error no types in locize/xliff
-import jsToXliff20 from "xliff/js2xliff";
 import * as defaultOptions from "../defaultOptions";
 import {TXliffObj, TXliffVersion} from "../types";
+import {toXliff} from "../xliffUtil";
 
 type TValuefulNode = Node & {
   value: string
@@ -44,7 +41,6 @@ export default async ({
   let index = 0;
 
   const xliffObj: TXliffObj = {
-    // TODO -- filename instead of namespace
     resources: {
       namespace: {}
     },
@@ -69,10 +65,5 @@ export default async ({
     index += 1;
   });
 
-  const create = {
-    "1.2": jsToXliff12,
-    "2.0": jsToXliff20
-  };
-
-  return  create[xliffVersion](xliffObj);
+  return toXliff(xliffObj, xliffVersion);
 };
