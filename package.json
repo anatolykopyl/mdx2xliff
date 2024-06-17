@@ -1,7 +1,7 @@
 {
   "name": "mdx2xliff",
   "type": "module",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A utility for generating a xliff and a skeleton file from an mdx file and back.",
   "main": "dist/index.js",
   "scripts": {
@@ -33,6 +33,6 @@
     "remark-stringify": "^11.0.0",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",
-    "xmlbuilder2": "^3.1.1"
+    "xliff": "^6.2.1"
   }
 }

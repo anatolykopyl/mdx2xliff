@@ -3,9 +3,12 @@ import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
 import {visit} from "unist-util-visit";
 import {Node} from "unified/lib";
-import {create} from "xmlbuilder2";
+// @ts-expect-error no types in locize/xliff
+import jsToXliff12 from "xliff/jsToXliff12";
+// @ts-expect-error no types in locize/xliff
+import jsToXliff20 from "xliff/js2xliff";
 import * as defaultOptions from "../defaultOptions";
-import {TTransUnit, TXliff} from "../types";
+import {TXliffObj, TXliffVersion} from "../types";
 
 type TValuefulNode = Node & {
   value: string
@@ -15,19 +18,22 @@ export default async ({
   beforeDefaultRemarkPlugins,
   fileContents,
   skipNodes,
-  sourceLang,
-  targetLang
+  sourceLanguage,
+  targetLanguage,
+  xliffVersion
 }: {
   fileContents: string,
   beforeDefaultRemarkPlugins?: Plugin[],
   skipNodes?: string[],
-  sourceLang?: string,
-  targetLang?: string
+  sourceLanguage?: string,
+  targetLanguage?: string,
+  xliffVersion?: TXliffVersion
 }): Promise<string> => {
   beforeDefaultRemarkPlugins = beforeDefaultRemarkPlugins ?? defaultOptions.beforeDefaultRemarkPlugins;
   skipNodes = skipNodes ?? defaultOptions.skipNodes;
-  sourceLang = sourceLang ?? defaultOptions.sourceLang;
-  targetLang = targetLang ?? defaultOptions.targetLang;
+  sourceLanguage = sourceLanguage ?? defaultOptions.sourceLang;
+  targetLanguage = targetLanguage ?? defaultOptions.targetLang;
+  xliffVersion = xliffVersion ?? defaultOptions.xliffVersion;
 
   const tree = unified()
     .use(beforeDefaultRemarkPlugins)
@@ -36,19 +42,14 @@ export default async ({
     .parse(fileContents);
 
   let index = 0;
-  const xliffObj: {
-    xliff: TXliff
-  } = {
-    xliff: {
-      "@xmlns": "urn:oasis:names:tc:xliff:document:2.0",
-      "@version": "2.1",
-      "@srcLang": sourceLang,
-      "@trgLang": targetLang,
-      file: {
-        "@datatype": "plaintext",
-        unit: [] as TTransUnit[]
-      }
-    }
+
+  const xliffObj: TXliffObj = {
+    // TODO -- filename instead of namespace
+    resources: {
+      namespace: {}
+    },
+    sourceLanguage,
+    targetLanguage
   };
 
   visit(tree, (_node) => {
@@ -57,17 +58,21 @@ export default async ({
     if (!node.value) return;
     if (node.value.trim() === "") return;
 
-    xliffObj.xliff.file["unit"].push({
-      "@id": index,
-      "@type": node.type,
-      segment: {
-        source: node.value
+    xliffObj.resources.namespace[index] = {
+      source: node.value,
+      target: "",
+      additionalAttributes: {
+        nodeType: node.type
       }
-    });
+    };
 
     index += 1;
   });
 
-  const doc = create(xliffObj);
-  return doc.end({prettyPrint: true});
+  const create = {
+    "1.2": jsToXliff12,
+    "2.0": jsToXliff20
+  };
+
+  return  create[xliffVersion](xliffObj);
 };

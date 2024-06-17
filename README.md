@@ -2,8 +2,6 @@
 
 A utility for generating a xliff and a skeleton file from a mdx file and back.
 
-The xliff file is compliant with version 2.1, which is important if working with DeepL.
-
 ## API
 
 This package provides two named exports: `extract` and `reconstruct`.
@@ -19,8 +17,9 @@ Generates a skeleton file and a xliff file from a given mdx.
   fileContents: string
   beforeDefaultRemarkPlugins?: Plugin[]
   skipNodes?: string[]
-  sourceLang?: string
-  targetLang?: string
+  sourceLanguage?: string
+  targetLanguage?: string
+  xliffVersion?: "1.2" | "2.0"
 }
 ```
 
@@ -30,8 +29,9 @@ Generates a skeleton file and a xliff file from a given mdx.
 {
   beforeDefaultRemarkPlugins: []
   skipNodes: ["code", "inlineCode", "mdxjsEsm", "mdxFlowExpression", "mdxTextExpression"]
-  sourceLang: "ru"
-  targetLang: "en"
+  sourceLanguage: "ru"
+  targetLanguage: "en"
+  xliffVersion: "2.0"
 }
 ```
 
@@ -57,6 +57,7 @@ If a translation is missing it throws an error by default. This can be changed b
   skeleton: string
   xliff: string
   ignoreUntranslated?: boolean
+  xliffVersion?: "1.2" | "2.0"
 }
 ```
 
@@ -65,6 +66,7 @@ If a translation is missing it throws an error by default. This can be changed b
 ```
 {
   ignoreUntranslated: false
+  xliffVersion: "2.0"
 }
 ```
 
@@ -84,8 +86,8 @@ import { extract } from 'mdx2xliff'
   const fileContents = readFileSync('test.mdx', 'utf8')
   const { skeleton, xliff } = await extract({
     fileContents,
-    sourceLang: 'en',
-    targetLang: 'fr'
+    sourceLanguage: 'en',
+    targetLanguage: 'fr'
   })
 
   writeFileSync('test.skl', skeleton)
