@@ -1,10 +1,6 @@
 import {visit} from "unist-util-visit";
 import {Transformer} from "unified";
-import {Node} from "unified/lib";
-
-type TValuefulNode = Node & {
-  value: string
-}
+import {TValuefulNode} from "../types";
 
 export default function({
   skipNodes,

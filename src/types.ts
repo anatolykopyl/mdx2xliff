@@ -1,3 +1,5 @@
+import {Node} from "unified/lib";
+
 export type TXliffVersion = "1.2" | "2.0"
 
 export type TXliffUnit = Record<
@@ -17,3 +19,6 @@ export type TXliffObj = {
   "targetLanguage": string
 }
 
+export type TValuefulNode = Node & {
+  value: string
+}
