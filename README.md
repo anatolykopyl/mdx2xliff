@@ -81,19 +81,48 @@ string
 ```typescript
 import { readFileSync, writeFileSync } from 'fs'
 import { extract } from 'mdx2xliff'
+import headingToHtml from 'mdx2xliff/remarkPlugins/headingToHtml'
 
 ;(async () => {
   const fileContents = readFileSync('test.mdx', 'utf8')
   const { skeleton, xliff } = await extract({
     fileContents,
     sourceLanguage: 'en',
-    targetLanguage: 'fr'
+    targetLanguage: 'fr',
+    beforeDefaultRemarkPlugins: [headingToHtml]
   })
 
   writeFileSync('test.skl', skeleton)
   writeFileSync('test.xliff', xliff)
 })()
 ```
+
+## Weak spots of this approach
+
+### Loss of context
+
+Whatever app is responsible for translation will have to deal with very short chunks of text.
+In a lot of cases they will be one or two words, this leads to suboptimal machine translation quality.
+
+### MDX headings with IDs
+
+Headings like this:
+
+```markdown
+## Some heading {#some-id}
+```
+
+are not part of any markdown spec and their MDX AST representation is the same as for a normal Markdown heading.
+This leads to that a machine translation can mess up and change the ID 
+or malform the curly brace part so that the MDX will not even compile. 
+
+This can be worked around by using a built-in remark plugin `mdx2xliff/remarkPlugins/headingToHtml`.
+It replaces all Markdown headings with HTML headings, preserving the IDs.
+
+### Frontmatter
+
+Similar to the previous issue, frontmatter is easily malformed by machine translation.
+`mdx2xliff` does not yet provide a way of dealing with this.
 
 ## Similar projects
 

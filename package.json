@@ -1,9 +1,12 @@
 {
   "name": "mdx2xliff",
   "type": "module",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "A utility for generating a xliff and a skeleton file from an mdx file and back.",
   "main": "dist/index.js",
+  "exports": {
+    "./remarkPlugins/": "./dist/remarkPlugins/"
+  },
   "scripts": {
     "build": "rimraf dist && npm run build:main && npm run build:types",
     "build:main": "babel -x .ts -d dist src",
