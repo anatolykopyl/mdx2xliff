@@ -24,7 +24,7 @@ Or arguably worse, since it breaks mdx compilation, alterations to html tags:
 The solution this package proposes is to separate text from the markup and translate only the text.
 
 This is done using two file formats: xliff and skl.
-The latter is just an xml with all the text content, and the former is essentially an mdx file with all the text replaced by placeholders.
+The former is just an xml with all the text content, and the latter is essentially an mdx file with all the text replaced by placeholders.
 
 We translate only the xliff and then combine the result of the translation with the existing skeleton.
 
