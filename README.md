@@ -2,6 +2,72 @@
 
 A utility for generating a xliff and a skeleton file from a mdx file and back.
 
+## Introduction
+
+When translating a mdx document with an automatic tool, such as Google Translate or DeepL there is a significant possibility that it will break some of the syntax.
+It is likely that you have encountered instances where after translation some links look like this, where a space is inserted in the middle of it:
+
+```markdown
+[Link text] (example.com)
+```
+
+Or arguably worse, since it breaks mdx compilation, alterations to html tags:
+
+```jsx
+<Tabs>
+  <TabItem>
+    Somehow after translation both TabItem tags are opening! 
+  <TabItem>
+</Tabs>
+```
+
+The solution this package proposes is to separate text from the markup and translate only the text.
+
+This is done using two file formats: xliff and skl.
+The latter is just an xml with all the text content, and the former is essentially an mdx file with all the text replaced by placeholders.
+
+We translate only the xliff and then combine the result of the translation with the existing skeleton.
+
+For example, a file like this:
+
+```markdown
+# My file
+
+With a paragraph, that contains a [link](https://example.com/)
+```
+
+Will be split into a XLIFF file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd" version="1.2">
+    <file original="namespace" datatype="plaintext" source-language="ru" target-language="en-US">
+        <body>
+            <trans-unit id="0">
+                <source>My file</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="1">
+                <source>With a paragraph, that contains a</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>link</source>
+                <target></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
+```
+
+And a SKL file:
+
+```markdown
+# %%%0%%%
+
+%%%1%%%[%%%2%%%](https://example.com/)
+```
+
 ## API
 
 This package provides two named exports: `extract` and `reconstruct`.
