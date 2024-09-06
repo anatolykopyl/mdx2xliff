@@ -1,10 +1,11 @@
 {
   "name": "mdx2xliff",
   "type": "module",
-  "version": "3.2.1",
+  "version": "3.2.3",
   "description": "A utility for generating a xliff and a skeleton file from an mdx file and back.",
   "main": "dist/index.js",
   "exports": {
+    ".": "./dist/index.js",
     "./remarkPlugins/": "./dist/remarkPlugins/"
   },
   "scripts": {
