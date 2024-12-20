@@ -20,7 +20,7 @@ export default async ({
   for (const id in transUnits) {
     if (!transUnits[id].target && !ignoreUntranslated) throw new Error(`Id ${id} doesn't have a translation`);
     if (!transUnits[id].target) {
-      result = result.replace(`%%%${id}%%%`, transUnits[id].source);
+      result = result.replace(`%%%${id}%%%`, transUnits[id].source ?? "");
     } else {
       result = result.replace(`%%%${id}%%%`, transUnits[id].target);
     }
